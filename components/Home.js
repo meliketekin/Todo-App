@@ -10,12 +10,14 @@ const Home = () => {
       text: "Learn React Native",
       importance: "high",
       date: "Fri, 05 May 2022 15:00:00 GMT",
+      completed: false,
     },
     {
       id: 2,
       text: "Learn React",
       importance: "high",
       date: "Fri, 05 May 2022 15:00:00 GMT",
+      completed: false,
     },
   ];
 

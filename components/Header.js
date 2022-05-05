@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontStyle: "italic",
     margin: 30,
+    marginLeft: 25,
     marginTop: 30,
   },
 });
