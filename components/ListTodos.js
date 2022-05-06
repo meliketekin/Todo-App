@@ -122,7 +122,9 @@ const ListTodos = ({ todos, setTodos }) => {
                 <Text style={styles.todoDate}>{data.item.date}</Text>
               </View>
             );
-          }}
+          }
+        }
+        //keyextractor ????
         />
         )}
       </View>
@@ -217,13 +219,26 @@ const ListTodos = ({ todos, setTodos }) => {
               marginBottom: 10,
             }}
             onPress={() => {
-              setTodos({ ...todos, id: Math.random() });
-              setTodos([...todos, todo]);
+        
+                
+                
+              
+                  const newTodo = {
+                ...todo,
+                id: todos.length+1,
+                date: new Date().toUTCString()
+              }
+              
+              if(todo?.text) {
+              setTodos([...todos, newTodo]);
+              
               setTodo({});
               setVisible(false);
               addToDo();
               Keyboard.dismiss();
             }}
+              }
+              
           >
             <Text style={{ color: "white", fontSize: 15, alignSelf: "center" }}>
               ADD
@@ -239,6 +254,11 @@ const ListTodos = ({ todos, setTodos }) => {
 export default ListTodos;
 
 const styles = StyleSheet.create({
+    // container: {
+    //     flex:1,
+    //     marginBottom: -220,
+        
+    // },
   todoItem: {
     borderColor: "#ce93d8",
     backgroundColor: "#f3e5f5",

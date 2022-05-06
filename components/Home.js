@@ -4,24 +4,24 @@ import Header from "./Header";
 import ListTodos from "./ListTodos";
 
 const Home = () => {
-  const initialTodos = [
-    {
-      id: 1,
-      text: "Learn React Native",
-      importance: "high",
-      date: "Fri, 05 May 2022 15:00:00 GMT",
-      completed: false,
-    },
-    {
-      id: 2,
-      text: "Learn React",
-      importance: "high",
-      date: "Fri, 05 May 2022 15:00:00 GMT",
-      completed: false,
-    },
-  ];
+  // const initialTodos = [
+  //   {
+  //     id: 5,
+  //     text: "Learn React Native",
+  //     importance: "high",
+  //     date: "Fri, 05 May 2022 15:00:00 GMT",
+  //     completed: false,
+  //   },
+  //   {
+  //     id: 6,
+  //     text: "Learn React",
+  //     importance: "high",
+  //     date: "Fri, 05 May 2022 15:00:00 GMT",
+  //     completed: false,
+  //   },
+  // ];
 
-  const [todos, setTodos] = useState(initialTodos);
+  const [todos, setTodos] = useState([]);
 
   return (
     <>
