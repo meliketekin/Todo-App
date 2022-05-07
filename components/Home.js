@@ -22,11 +22,12 @@ const Home = () => {
   // ];
 
   const [todos, setTodos] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <Header />
-      <ListTodos todos={todos} setTodos={setTodos} />
+      <Header todos={todos} setTodos={setTodos} visible={visible} />
+      <ListTodos todos={todos} setTodos={setTodos} visible={visible} setVisible={setVisible} />
     </>
   );
 };
