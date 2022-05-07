@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,23 +11,16 @@ import {
   Animated,
   Keyboard,
   Image,
-  
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const { width, height } = Dimensions.get("window");
 
 const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
-  
-  const [todo, setTodo] = useState({});
+  const [todo, setTodo] = useState({text:"", importance:"normal"});
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const [emptyInput, setEmptyInput] = useState(false);
 
-
-
-  
   const modalTrigger = () => {
     setVisible(true);
     Animated.timing(animation, {
@@ -66,17 +59,56 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
       animation.setValue(0);
     });
   };
+const EmptyComponent = () => { 
+  return(
+    
+      <View>
+        <Image
+          source={require("../assets/emptyTodo.png")}
+          style={{
+            width: width / 1.2,
 
+            resizeMode: "contain",
+            alignSelf: "center",
+          }}
+        />
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 20,
+            color: "grey",
+            fontWeight: "bold",
+          }}
+        >
+          What are you going to do today?
+        </Text>
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 17,
+            paddingTop: 15,
+            color: "grey",
+            fontWeight: "bold",
+          }}
+        >
+          Add a todo to get started!
+        </Text>
+      </View>
+    
+  )
+ }
   const open = {
     transform: [{ scale: openModal }, { translateY: closeModal }],
   };
   if (visible) {
     return (
-      <TouchableOpacity activeOpacity={1} style={{ flex: 1, backgroundColor: '#fbf8fb' }} onPress={
-        () => {
+      <TouchableOpacity
+        activeOpacity={1}
+        style={{ flex: 1, backgroundColor: "#fbf8fb" }}
+        onPress={() => {
           Keyboard.dismiss();
-        }
-      }>
+        }}
+      >
         <Animated.View style={open}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -99,7 +131,6 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
                       borderRadius: 5,
                     }
               }
-              
               placeholder="What to do? 🙃"
               multiline={true}
               onChangeText={(text) => {
@@ -110,7 +141,7 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
             />
 
             {emptyInput && (
-              <Text style={{ color: "red", paddingTop: 5, paddingLeft: 5,  }}>
+              <Text style={{ color: "red", paddingTop: 5, paddingLeft: 5 }}>
                 Your todo cannot be empty!
               </Text>
             )}
@@ -123,22 +154,27 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
                   alignItems: "center",
                 }}
                 onPress={() => {
-                  
-                  todo.importance == "high"
+                  todo.importance == "important"
                     ? setTodo({ ...todo, importance: "" })
-                    : setTodo({ ...todo, importance: "high" });
+                    : setTodo({ ...todo, importance: "important" });
                 }}
               >
                 <Ionicons
                   name={
-                    todo.importance == "high"
-                      ? "stop-circle"
-                      : "ellipse-outline"
+                    todo.importance == "important"
+                      ? "radio-button-on"
+                      : "radio-button-off"
                   }
-                  color="red"
+                  color={"red"}
                   size={25}
                 />
-                <Text style={{ color: "red", fontSize: 12 }}>
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 12,
+                    fontWeight: todo.importance == "important" ? "bold" : "normal",
+                  }}
+                >
                   Very important
                 </Text>
               </TouchableOpacity>
@@ -157,12 +193,20 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
               >
                 <Ionicons
                   name={
-                    todo.importance == "low" ? "stop-circle" : "ellipse-outline"
+                    todo.importance == "low"
+                      ? "radio-button-on"
+                      : "radio-button-off"
                   }
                   color="green"
                   size={25}
                 />
-                <Text style={{ color: "green", fontSize: 12 }}>
+                <Text
+                  style={{
+                    color: "green",
+                    fontSize: 12,
+                    fontWeight: todo.importance == "low" ? "bold" : "normal",
+                  }}
+                >
                   Not important
                 </Text>
               </TouchableOpacity>
@@ -183,12 +227,14 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
                   ...todo,
                   id: todos.length + 1,
                   date: new Date().toUTCString(),
+                  importance: todo.importance ? todo.importance : "normal",
                 };
 
                 if (todo?.text) {
                   //if there is text in the todo
                   setEmptyInput(false);
                   setTodos([...todos, newTodo]);
+                  console.log(newTodo);
                   setTodo({});
                   setVisible(false);
                   addToDo();
@@ -219,9 +265,11 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
           <TouchableOpacity
             style={{ position: "absolute", bottom: 20, right: 20 }}
             onPress={() => {
+              setTodo({text:"", importance:"normal"})
               close();
               setTimeout(() => {
                 setVisible(false);
+                setEmptyInput(false);
               }, 500);
             }}
           >
@@ -231,50 +279,57 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
       </TouchableOpacity>
     );
   }
- 
 
   return (
     <>
-      <View style={[styles.container,{backgroundColor:!todos.length && !visible ? '#fbf8fb' : "#fbf8fb"}]}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: !todos.length && !visible ? "#fbf8fb" : "#fbf8fb",
+          },
+        ]}
+      >
         {!visible && (
           <FlatList
-          ListEmptyComponent={
-            <View >
-        <Image
-        
-          source={require("../assets/emptyTodo.png")}
-          style={{
-            width: width / 1.2,
-          
-            resizeMode: "contain",
-            alignSelf: "center",
-          }}
-        />
-        <Text style={{alignSelf:"center", fontSize:20, color:"grey", fontWeight:"bold"}}>What are you going to do today?</Text>
-        <Text style={{alignSelf:"center", fontSize:17, paddingTop:15, color:"grey", fontWeight:"bold"}}>Add a todo to get started!</Text>
-        
-      </View>
-    
-          }
-            data={todos}
-            renderItem={(data) => {
+            ListEmptyComponent={<EmptyComponent/>}
+            data={todos ?  todos.sort((a,b) =>( a.importance.length > b.importance.length)).sort((a,b) => a.importance == b.importance && a.date < b.date) : []}
+            renderItem={({ item }) => {
               return (
-                <View style={styles.todoItem}>
+                <View
+                  style={[
+                    styles.todoItem,
+                    {
+                      borderColor:
+                        item.importance == "important"
+                          ? "red"
+                          : item.importance == "low"
+                          ? "green"
+                          : "#ce93d8",
+                      backgroundColor:
+                        item.importance == "important"
+                          ? "#ffdbdb"
+                          : item.importance == "low"
+                          ? "#d1e9e1"
+                          : "#f3e5f5",
+                    },
+                  ]}
+                >
                   <Text
                     style={
-                      !data.item.completed
+                      !item.completed
                         ? styles.todoText
                         : styles.completedTodoText
                     }
                   >
-                    {data.item.text}
+                    {item.text}
                   </Text>
                   <TouchableOpacity
                     style={styles.todoCheck}
                     onPress={() => {
                       setTodos((prevTodos) => {
                         return prevTodos.map((todo) => {
-                          if (todo.id === data.item.id) {
+                          if (todo.id === item.id) {
                             return {
                               ...todo,
                               completed: !todo.completed,
@@ -286,9 +341,9 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
                     }}
                   >
                     <Feather
-                      name={data.item.completed ? "check-circle" : "circle"}
+                      name={item.completed ? "check-circle" : "circle"}
                       size={24}
-                      color={data.item.completed ? "#019d6a" : "black"}
+                      color={item.completed ? "#019d6a" : "black"}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -296,16 +351,14 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
                     onPress={() => {
                       //return todos without the todo that was deleted
                       setTodos((prevTodos) => {
-                        return prevTodos.filter(
-                          (todo) => todo.id !== data.item.id
-                        );
+                        return prevTodos.filter((todo) => todo.id !== item.id);
                       });
                     }}
                   >
                     <Feather name="trash-2" size={24} color="black" />
                   </TouchableOpacity>
 
-                  <Text style={styles.todoDate}>{data.item.date}</Text>
+                  <Text style={styles.todoDate}>{item.date}</Text>
                 </View>
               );
             }}
@@ -348,8 +401,6 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
   },
   todoItem: {
-    borderColor: "#ce93d8",
-    backgroundColor: "#f3e5f5",
     borderRadius: 10,
     borderWidth: 1,
     margin: 10,
