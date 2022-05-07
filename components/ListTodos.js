@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const { width, height } = Dimensions.get("window");
@@ -24,6 +25,9 @@ const ListTodos = ({ todos, setTodos, visible, setVisible }) => {
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const [emptyInput, setEmptyInput] = useState(false);
 
+
+
+  
   const modalTrigger = () => {
     setVisible(true);
     Animated.timing(animation, {
