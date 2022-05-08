@@ -131,6 +131,8 @@ const EmptyComponent = () => {
                       borderRadius: 5,
                     }
               }
+              spellCheck={false}
+              autoCorrect={false}
               placeholder="What to do? 🙃"
               multiline={true}
               onChangeText={(text) => {
@@ -324,6 +326,7 @@ const EmptyComponent = () => {
                   >
                     {item.text}
                   </Text>
+                  <View style={{position:"absolute", top:34, right:15}}>
                   <TouchableOpacity
                     style={styles.todoCheck}
                     onPress={() => {
@@ -357,9 +360,9 @@ const EmptyComponent = () => {
                   >
                     <Feather name="trash-2" size={24} color="black" />
                   </TouchableOpacity>
-
+              
                   <Text style={styles.todoDate}>{item.date}</Text>
-                </View>
+                </View></View>
               );
             }}
             //keyextractor ????
@@ -404,17 +407,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     margin: 10,
-    marginHorizontal: 20,
+    marginHorizontal:20,
+   
     padding: 15,
+    paddingLeft:10,
+    
     height: 70,
   },
   todoText: {
     fontSize: 15,
     paddingLeft: 13,
+    
+    marginRight:100,
+    
   },
   completedTodoText: {
     fontSize: 15,
     paddingLeft: 13,
+    
+    marginRight:100,
     textDecorationLine: "line-through",
     color: "black",
   },
