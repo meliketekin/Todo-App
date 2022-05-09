@@ -6,8 +6,10 @@ A mobile application for daily use where you can create and sort your todos by i
 
 First, clone the project. 
 ```
-git clone  https://github.com/meliketekin/Todo-App
-npm  install
+git clone https://github.com/meliketekin/Todo-App
+cd Todo-App
+npm install
+expo start
 ```
 and you good to go.
 
