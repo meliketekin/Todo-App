@@ -26,19 +26,30 @@ const Home = () => {
   const [todos, setTodos] = useState([]);
   const [visible, setVisible] = useState(false);
 
-  useEffect(async () => {
-    try {
-      const todos = await AsyncStorage.getItem("todos");
-      if (todos !== null) {
-        setTodos(JSON.parse(todos));
+  useEffect(() => {
+    const getTodos = async () => {
+      try {
+        const todos = await AsyncStorage.getItem("todos");
+        if (todos !== null) {
+          setTodos(JSON.parse(todos));
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
+    getTodos();
+    
   }, []); // [] means that this effect will run when app loads
 
-  useEffect(async () => {
-    await AsyncStorage.setItem("todos", JSON.stringify(todos));
+  useEffect(() => {
+    const saveTodos = async () => {
+      try {
+        await AsyncStorage.setItem("todos", JSON.stringify(todos));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    saveTodos();
   }, [todos]);
 
  
